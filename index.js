@@ -7,7 +7,19 @@ const dotter = process.env;
 // const cors = require("cors");
 clat.config();
 const app = express();
-mongoose.connect(dotter.DATABASE_URL);
+const con = mongoose.connection;
+mongoose.connect(dotter.DATABASE_URL, {
+  useNewUrlParser: true,
+  useFindAndModify: false,
+  useUnifiedTopology: true,
+});
+con
+  .once("open", () => {
+    console.log("Connected to database Successfully!!!");
+  })
+  .on("error", () => {
+    console.log("Databse connection failed!!!");
+  });
 
 app.use(express.json());
 
